@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8"/>
+    <title>도형 그리기</title>
+    <script type="text/javascript">
+      window.onload = readyToDraw 
+      window.onresize = resizeWindow
+      var ctx = null;
+      var canvas = null;
+      var figure = null;
+      var side = null;
+      var color = null;
+      var yes = null;
+      var no = null;
+      var center = null;
+      function resizeWindow() {
+        const canvasWidth = window.innerWidth
+        canvas.style.width = (canvasWidth - 20 - 20) + 'px'
+      }
+
+      function readyToDraw() {
+        canvas = document.getElementById('drawingArea');
+        if (canvas.getContext) {
+          ctx = canvas.getContext('2d');
+        }
+        figure = document.getElementById('figure');
+        side = document.getElementById('side');
+        color = document.getElementById('color');
+        yes = document.querySelector('#yes');
+        no = document.querySelector('#no');
+        sideLength = side.value;
+        center = (canvas.width - side.value) * 1/2;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+        const canvasWidth = window.innerWidth
+        canvas.style.width = (canvasWidth - 20 - 20) + 'px'
+      }
+
+      function draw() {
+        readyToDraw() 
+        if (yes.checked === false && no.checked === false || sideLength === NaN || sideLength === null || color.value === null) {
+            alert("옵션을 모두 입력하세요.")
+        }
+        ctx.beginPath();
+
+        if (yes.checked == true && no.checked == false) {
+            ctx.fillStyle = color.value;
+        } else if (no.checked == true && yes.checked == false) {
+            ctx.strokeStyle = color.value;
+        }  
+
+        if (figure.value === 'square') {
+          if (yes.checked === true && no.checked === false) {
+              ctx.fillStyle = color.value;
+              ctx.fillRect (center, 10, sideLength, sideLength); 
+              ctx.closePath();
+          } else if (no.checked === true && yes.checked === false) {
+              ctx.strokeStyle = color.value;
+              ctx.strokeRect(center, 10, side.value, side.value);
+              ctx.closePath();
+              ctx.stroke();    
+          }  
+        }   
+        else if (figure.value === 'triangle') {
+          ctx.moveTo(center, 10);
+          ctx.lineTo(center + Number(sideLength), 10);
+          ctx.lineTo(center + 1/2 * sideLength, 10 + Math.sqrt(3)/2 * sideLength);
+          ctx.closePath();
+        }
+        else if (figure.value === 'pentagon') {
+          ctx.moveTo(center, 10);
+          ctx.lineTo(center + Number(sideLength), 10);
+          ctx.lineTo(center + 1.31 * sideLength, 10 + 0.95 * sideLength);
+          ctx.lineTo(center + 0.5 * sideLength, 10 + 1.54 * sideLength);
+          ctx.lineTo(center - 0.31 * sideLength, 10 + 0.95 * sideLength);
+          ctx.closePath();
+        }
+        else if (figure.value === 'hexagon') {
+          ctx.moveTo(center, 10);
+          ctx.lineTo(center + Number(sideLength), 10);
+          ctx.lineTo(center + 1.5 * sideLength, 10 + 0.87 * sideLength);
+          ctx.lineTo(center + Number(sideLength), 10 + 1.74 * sideLength);
+          ctx.lineTo(center, 10 + 1.74 * sideLength);
+          ctx.lineTo(center - 0.5 * sideLength, 10 + 0.87 * sideLength);
+          ctx.closePath();
+        }
+        else if (figure.value === 'heptagon') {
+          ctx.moveTo(center, 10);
+          ctx.lineTo(center + Number(sideLength), 10);
+          ctx.lineTo(center + 1.63 * sideLength, 10 + 0.78 * sideLength);
+          ctx.lineTo(center + 1.40 * sideLength, 10 + 1.76 * sideLength);
+          ctx.lineTo(center + 0.5 * sideLength, 10 + 2.19 * sideLength);
+          ctx.lineTo(center - 0.4 * sideLength, 10 + 1.76 * sideLength);
+          ctx.lineTo(center - 0.63 * sideLength, 10 + 0.78 * sideLength);
+          ctx.closePath();
+        }
+        else if (figure.value === 'octagon') {
+          ctx.moveTo(center, 10);
+          ctx.lineTo(center + Number(sideLength), 10);
+          ctx.lineTo(center + 1.71 * sideLength, 10 + 0.71 * sideLength);
+          ctx.lineTo(center + 1.71 * sideLength, 10 + 1.71 * sideLength);
+          ctx.lineTo(center + Number(sideLength), 10 + 2.42 * sideLength);
+          ctx.lineTo(center, 10 + 2.42 * sideLength);
+          ctx.lineTo(center - 0.71 * sideLength, 10 + 1.71 * sideLength);
+          ctx.lineTo(center - 0.71 * sideLength, 10 + 0.71 * sideLength);
+          ctx.closePath()
+        }   
+        else if (figure.value === 'circle') {
+          ctx.arc(center, 300, sideLength, 0, 2 * Math.PI);
+        }
+        else {
+          alert("그릴 수 있는 다각형이 아닙니다.")
+          return;
+        }
+        if (yes.checked == true && no.checked == false) {
+            ctx.fill();
+        } else if (no.checked == true && yes.checked == false) {
+            ctx.stroke();
+        }
+          
+      }
+
+      function clearCanvas() {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+      }
+    </script>
+    <style>
+      @charset "utf-8";
+      @import url(//spoqa.github.io/spoqa-han-sans/css/SpoqaHanSansNeo.css);
+      * { font-family:'Apple SD Gothic Neo', 'Spoqa Han Sans Neo', 'sans-serif'; }
+      body {
+          margin: 10px;
+          padding: 10px;
+      }
+      #option {
+        border: 1px solid #c0c0c0;
+        border-radius: 10px;
+        height: 220px;
+        margin: 0px 0px 20px 0px;
+        padding: 0px;
+      }
+      legend {
+        font-size:1.2em;
+        font-weight:bold;
+        text-align: center;
+      }
+      canvas {
+        border: 1px solid #c0c0c0;
+        border-radius: 10px;
+      }
+      ul {
+        list-style: none;
+        font-weight: lighter;
+      }
+      .df_label {
+        width: 100px;
+        float: left;
+        margin-right: 15px;
+      }
+      .df_option {
+        width: 100px;
+        height: 20px;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        margin: 0px;
+        padding: 0px;
+      }
+      .df_input {
+        width: 98px;
+        height: 18px;
+        border: 1px solid #aaa;
+        border-radius: 5px;
+        margin: 0px;
+        padding: 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <form>
+      <fieldset id="option">
+        <legend>도형 옵션</legend>
+        <ul>
+            <li>
+                <label for="figure" class="df_label">도형이름</label>
+                <select id="figure" class="df_option">
+                  <option value="circle">원</option>
+                  <option value="triangle">삼각형</option>
+                  <option value="square">사각형</option>
+                  <option value="pentagon">오각형</option>
+                  <option value="hexagon">육각형</option>
+                  <option value="heptagon">칠각형</option>
+                  <option value="octagon">팔각형</option>
+                </select>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <label class="df_label" for="side">한 변의 길이</label>
+                <input type="number" value="200" min="1" max="1000" id="side" required class="df_input">
+            </li>
+        </ul>
+        <ul>
+          <li>
+            <label for="color" class="df_label">색상</label>
+            <select id="color" class="df_option">
+              <option value="black">black</option>
+              <option value="gray">gray</option>
+              <option value="red">red</option>
+              <option value="blue">blue</option>
+              <option value="skyblue">skyblue</option>
+              <option value="green">green</option>
+              <option value="purple">purple</option>
+              <option value="indigo">indigo</option>
+              <option value="orange">orange</option>
+              <option value="yellowgreen">yellogreen</option>
+              <option value="yellow">yellow</option>
+              <option value="pink">pink</option>
+              <option value="maroon">maroon</option>
+              <option value="khaki">khaki</option>
+              <option value="brown">brown</option>
+              <option value="magenta">magenta</option>
+            </select>
+          </li>
+        </ul>
+        <ul>
+          <li>
+            <label for="paint" class="df_label">칠하기</label>
+            <label><input type="radio" name="select" id="yes">예</label>
+            <label><input type="radio" name="select" id="no">아니오</label>
+          </li>
+        </ul>
+        <ul>
+            <input type="button" id="button" value="그리기" onclick="draw()">
+            <input type="button" id="button" value="지우기" onclick="clearCanvas()">
+        </ul>
+      </fieldset>
+    </form>
+    <canvas id="drawingArea" width="1200px" height="600px"></canvas>
+    
+  </body>
+</html>
